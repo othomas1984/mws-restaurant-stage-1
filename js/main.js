@@ -143,9 +143,9 @@ resetRestaurants = (restaurants) => {
  * Create all restaurants HTML and add them to the webpage.
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
-  const ul = document.getElementById('restaurants-list');
+  const list = document.getElementById('restaurants-list');
   restaurants.forEach(restaurant => {
-    ul.append(createRestaurantHTML(restaurant));
+    list.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
 }
@@ -155,7 +155,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  */
 createRestaurantHTML = (restaurant) => {
   let url = DBHelper.urlForRestaurant(restaurant)
-  const li = document.createElement('li');
+  const restaurantArticle = document.createElement('article');
 
   const imageDiv = document.createElement('div');
   imageDiv.className = 'restaurant-image-div';
@@ -172,15 +172,15 @@ createRestaurantHTML = (restaurant) => {
   nameDiv.className = 'restaurant-name-div';
   nameDiv.innerHTML = `<h2>${restaurant.name}</h2>`;
   imageDiv.append(nameDiv)
-  li.append(imageDiv);
+  restaurantArticle.append(imageDiv);
 
   const address = document.createElement('p');
   address.innerHTML = restaurant.address;
-  li.append(address);
+  restaurantArticle.append(address);
 
   const hours = document.createElement('p');
   hours.innerHTML = todaysHours(restaurant.operating_hours);
-  li.append(hours);
+  restaurantArticle.append(hours);
   
   const moreContainer = document.createElement('div');
   moreContainer.className = 'moreContainer'
@@ -190,9 +190,9 @@ createRestaurantHTML = (restaurant) => {
     window.location = url;
   }
   moreContainer.append(more)
-  li.append(moreContainer)
+  restaurantArticle.append(moreContainer)
 
-  return li
+  return restaurantArticle
 }
 
 todaysHours = (operatingHours = self.restaurant.operating_hours) => {

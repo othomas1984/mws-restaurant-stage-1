@@ -40,16 +40,16 @@ h1, h2, h3, h4, h5, h6 {
 article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-#maincontent {
+main {
   background-color: #f3f3f3;
   min-height: 100%;
   display: flex; 
   flex-wrap: wrap;
 }
-#footer {
+footer {
   width: 100%;
 }
-#footer div {
+footer div {
   background-color: #444;
   color: #aaa;
   font-size: 8pt;
@@ -58,17 +58,17 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   text-align: center;
   text-transform: uppercase;
 }
-/* ====================== Navigation ====================== */
-nav {
+/* ====================== Header ====================== */
+header {
   width: 100%;
   background-color: #252831;
   text-align:center;
 }
-nav h1 {
+header h1 {
   margin: auto;
   padding: 20px;
 }
-nav h1 a {
+header h1 a {
   color: #fff;
   font-size: 14pt;
   font-weight: 200;
@@ -76,35 +76,36 @@ nav h1 a {
   text-transform: uppercase;
 }
 #breadcrumb {
-    padding: 8px 40px 12px;
-    list-style: none;
-    background-color: #eee;
-    font-size: 17px;
-    margin: 0;
+  text-align: left;
+  padding: 8px 40px 12px;
+  list-style: none;
+  background-color: #eee;
+  font-size: 17px;
+  margin: 0;
 }
 
 /* Display list items side by side */
 #breadcrumb li {
-    display: inline;
+  display: inline;
 }
 
 /* Add a slash symbol (/) before/behind each list item */
 #breadcrumb li+li:before {
-    padding: 8px;
-    color: black;
-    content: "/\00a0";
+  padding: 8px;
+  color: black;
+  content: "/\00a0";
 }
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275d8;
-    text-decoration: none;
+  color: #0275d8;
+  text-decoration: none;
 }
 
 /* Add a color on mouse-over */
 #breadcrumb li a:hover {
-    color: #01447e;
-    text-decoration: underline;
+  color: #01447e;
+  text-decoration: underline;
 }
 /* ====================== Map ====================== */
 #map {
@@ -152,7 +153,7 @@ nav h1 a {
   display: flex;
   flex-wrap: wrap;
 }
-#restaurants-list li {
+#restaurants-list article {
   background-color: #fff;
   /*border: 2px solid #ccc;*/
   font-family: Arial,sans-serif;
@@ -172,7 +173,7 @@ nav h1 a {
   margin: 0 10px;
   font-size: 11pt;
 }
-#restaurants-list li button {
+#restaurants-list article button {
   background-color: orange;
   /*border-bottom: 3px solid #eee;*/
   color: #fff;
@@ -186,27 +187,27 @@ nav h1 a {
   border: none;
   box-shadow: 0px 0px 5px 0px #999;
 }
-#restaurants-list li button:hover,
-#restaurants-list li button:focus {
+#restaurants-list article button:hover,
+#restaurants-list article button:focus {
   background-color: #3397DB;
 }
-#restaurants-list li .moreContainer {
+#restaurants-list article .moreContainer {
   width: 100%;
   text-align: center;
 }
 
-#restaurants-list li .restaurant-image-div {
+#restaurants-list article .restaurant-image-div {
   position: relative;
   margin: 0px 0px 10px;
 }
-#restaurants-list li .restaurant-name-div {
+#restaurants-list article .restaurant-name-div {
   position: absolute;
   bottom: 0px;
   width: 100%;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.6);;
 }
-#restaurants-list li .restaurant-name-div h2 {
+#restaurants-list article .restaurant-name-div h2 {
   color: #f18200;
   font-family: Arial,sans-serif;
   font-size: 14pt;
@@ -239,7 +240,7 @@ nav h1 a {
   height: 100%;
   width: 100%;
 }
-.inside #footer {
+.inside footer {
   bottom: 0;
   position: absolute;
 }

@@ -16,6 +16,7 @@
         #restaurant-image {
           order: 1;
           width: 100%;
+          max-height: 300px;
         }
         .inside #map-container {
           order: 2;
@@ -25,6 +26,17 @@
         }
         #reviews-list article {
           width: 100%;
+        }
+        #restaurant-cuisine {
+          bottom: 0;
+          top: none;
+          transform: translate(0, 0);
+        }
+      }
+      @media screen and (min-width:751px) {
+        #restaurant-cuisine {
+          top: 50%;
+          transform: translate(0, -50%);
         }
       }
     </style>
@@ -41,7 +53,6 @@
         <div id="map"></div>
       </section>
       <section id="restaurant-container">
-        <h2 id="restaurant-cuisine"></h2>
         <div id="restaurant-info">
           <h2 id="restaurant-name"></h2>
           <h3 id="restaurant-address"></h3>
@@ -49,6 +60,7 @@
         </div>
         <div id="restaurant-image">
           <img id="restaurant-img" />
+          <h2 id="restaurant-cuisine"></h2>
         </div>
       </section>
       <section id="reviews-container">

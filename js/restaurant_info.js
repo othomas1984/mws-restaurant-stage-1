@@ -89,6 +89,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img'
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.alt = restaurant.name
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
@@ -149,29 +150,29 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  * Create review HTML and add it to the webpage.
  */
 createReviewHTML = (review) => {
-  const li = document.createElement('li');
+  const reviewArticle = document.createElement('article');
   const rating = document.createElement('span');
   rating.innerHTML = `${review.rating} of 5 stars`;
   rating.className = "reviewRating"
   rating.classList.add(`rating${review.rating}`);
-  li.appendChild(rating);
+  reviewArticle.appendChild(rating);
 
   const name = document.createElement('span');
   name.innerHTML = review.name;
   name.className = "reviewerName"
-  li.appendChild(name);
+  reviewArticle.appendChild(name);
 
   const date = document.createElement('span');
   date.innerHTML = review.date;
   date.className = "reviewDate"
-  li.appendChild(date);
+  reviewArticle.appendChild(date);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
   comments.className = "reviewBody"
-  li.appendChild(comments);
+  reviewArticle.appendChild(comments);
 
-  return li;
+  return reviewArticle;
 }
 
 /**

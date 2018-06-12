@@ -8,10 +8,61 @@ var markers = []
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
+  registerServiceWorker()
   initMap(); // added 
   fetchNeighborhoods();
   fetchCuisines();
 });
+
+registerServiceWorker = () => {
+
+  if (!navigator.serviceWorker) {
+    console.log("Cannot register servie worker. Service worker unavailable.")
+    return
+  }
+
+  navigator.serviceWorker.register('/sw.js').then( (reg) => {
+
+    // if (!navigator.serviceWorker.controller) {
+    //   console.log("Service worker registered, but no controller available")
+    //   return;
+    // }
+
+    if (reg.waiting) {
+      console.log("Service worker update ready!")
+      updateReady(reg.waiting);
+      return;
+    }
+
+    if (reg.installing) {
+      console.log("Service worker installing!")
+      trackInstalling(reg.installing);
+      return;
+    }
+
+    reg.addEventListener('updatefound', () => {
+      console.log("Service worker update found!")
+      trackInstalling(reg.installing);
+    });
+    console.log("Service worker registration complete!")
+  });
+
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
+};
+
+updateReady = (worker) => {
+  worker.postMessage({action: 'skipWaiting'});
+};
+
+trackInstalling = (worker) => {
+  worker.addEventListener('statechange', () => {
+    if (worker.state == 'installed') {
+      updateReady(worker);
+    }
+  });
+};
 
 /**
  * Fetch all neighborhoods and set their HTML.

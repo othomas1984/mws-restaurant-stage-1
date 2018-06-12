@@ -15,9 +15,12 @@
           height: 300px;
         }
       }
-      @media screen and (max-width:500px) { 
+      @media screen and (max-width:550px) { 
         #restaurants-list article {
           width: calc((100% - 10px));
+        }
+        .filter-options {
+          flex-direction: column;
         }
       }
     </style>
@@ -31,13 +34,15 @@
         <div id="map"></div>
       </section>
       <section class="filter-options">
-        <h2>Filters</h2>
-        <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+        <h2>Filter</h2>
+        <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()" aria-labelledby="neighborhoods-select-label">
           <option value="all">All Neighborhoods</option>
         </select>
-        <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+        <label id="neighborhoods-select-label" class="hidden-label">Neighborhoods Filter</label>
+        <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()" aria-labelledby="cuisines-select-label">
           <option value="all">All Cuisines</option>
         </select>
+        <label id="cuisines-select-label" class="hidden-label">Cuisines Filter</label>
       </section>
       <section id="restaurants-list">
       </section>

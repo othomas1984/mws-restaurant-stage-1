@@ -58,6 +58,10 @@ footer div {
   text-align: center;
   text-transform: uppercase;
 }
+
+.hidden-label {
+  display: none;
+}
 /* ====================== Header ====================== */
 header {
   width: 100%;

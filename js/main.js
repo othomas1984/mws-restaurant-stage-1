@@ -154,31 +154,51 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 createRestaurantHTML = (restaurant) => {
+  let url = DBHelper.urlForRestaurant(restaurant)
   const li = document.createElement('li');
 
+  const imageDiv = document.createElement('div');
+  imageDiv.className = 'restaurant-image-div';
+  const imageLink = document.createElement('a');
+  imageLink.href = url;
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  li.append(image);
-
-  const name = document.createElement('h1');
-  name.innerHTML = restaurant.name;
-  li.append(name);
-
-  const neighborhood = document.createElement('p');
-  neighborhood.innerHTML = restaurant.neighborhood;
-  li.append(neighborhood);
+  image.alt = restaurant.name
+  imageLink.append(image);
+  imageDiv.append(imageLink);
+  
+  const nameDiv = document.createElement('div');
+  nameDiv.className = 'restaurant-name-div';
+  nameDiv.innerHTML = `<h2>${restaurant.name}</h2>`;
+  imageDiv.append(nameDiv)
+  li.append(imageDiv);
 
   const address = document.createElement('p');
   address.innerHTML = restaurant.address;
   li.append(address);
 
-  const more = document.createElement('a');
-  more.innerHTML = 'View Details';
-  more.href = DBHelper.urlForRestaurant(restaurant);
-  li.append(more)
+  const hours = document.createElement('p');
+  hours.innerHTML = todaysHours(restaurant.operating_hours);
+  li.append(hours);
+  
+  const moreContainer = document.createElement('div');
+  moreContainer.className = 'moreContainer'
+  const more = document.createElement('button');
+  more.innerHTML = 'More Details';
+  more.onclick = () => {
+    window.location = url;
+  }
+  moreContainer.append(more)
+  li.append(moreContainer)
 
   return li
+}
+
+todaysHours = (operatingHours = self.restaurant.operating_hours) => {
+  let today = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][new Date().getDay()]
+  let hours = operatingHours[today]
+  return 'Today\'s Hours<br>' + hours
 }
 
 /**

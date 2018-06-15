@@ -31,9 +31,11 @@
     </header>
     <main>
       <section id="map-container">
-        <div id="map"></div>
+        <div id="map" tabindex="0" aria-label="Restaurant Map">
+          <a href="#filter-section" tabindex="0">Skip Restaurant Map</span>
+        </div>
       </section>
-      <section class="filter-options">
+      <section class="filter-options" id="filter-section">
         <h2>Filter</h2>
         <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()" aria-labelledby="neighborhoods-select-label">
           <option value="all">All Neighborhoods</option>

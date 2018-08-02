@@ -9,6 +9,8 @@ const del = require('del');
 const wiredep = require('wiredep').stream;
 const runSequence = require('run-sequence');
 const source = require('vinyl-source-stream')
+var imagemin = require('gulp-imagemin');
+var pngquant = require('imagemin-pngquant');
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -77,6 +79,15 @@ gulp.task('html', ['css', 'js'], () => {
     .pipe(gulp.dest('dist'));
 });
 
+gulp.task('copy-images', function() {
+  gulp.src('app/img/*')
+    .pipe(imagemin({
+      progressive: true,
+      use: [pngquant()]
+    }))
+    .pipe(gulp.dest('.tmp/img'));
+});
+
 gulp.task('img', () => {
   return gulp.src('app/img/**/*')
     .pipe($.cache($.imagemin()))
@@ -101,7 +112,7 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('serve', () => {
-  runSequence(['clean', 'wiredep'], ['css', 'js', 'sw', 'fonts'], () => {
+  runSequence(['clean', 'wiredep'], ['css', 'js', 'sw', 'fonts', 'copy-images'], () => {
     browserSync.init({
       notify: false,
       port: 9000,

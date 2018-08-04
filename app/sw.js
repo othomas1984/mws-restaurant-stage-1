@@ -19,15 +19,15 @@ self.addEventListener('install', (event) => {
         '/css/styles.css',
         '/index.html',
         '/restaurant.html',
-        'img/1.jpg',
-        'img/2.jpg',
-        'img/3.jpg',
-        'img/4.jpg',
-        'img/5.jpg',
-        'img/6.jpg',
-        'img/7.jpg',
-        'img/8.jpg',
-        'img/9.jpg'
+        'img/1_1x.jpg','img/1_2x.jpg',
+        'img/2_1x.jpg','img/2_2x.jpg',
+        'img/3_1x.jpg','img/3_2x.jpg',
+        'img/4_1x.jpg','img/4_2x.jpg',
+        'img/5_1x.jpg','img/5_2x.jpg',
+        'img/6_1x.jpg','img/6_2x.jpg',
+        'img/7_1x.jpg','img/7_2x.jpg',
+        'img/8_1x.jpg','img/8_2x.jpg',
+        'img/9_1x.jpg','img/9_2x.jpg'
       ]);
     }).catch ( (error) => {
       console.log("Cache Error: ", error)
@@ -67,17 +67,11 @@ self.addEventListener('fetch', (event) => {
     if (url.pathname === '/') {
       request = '/index.html'
     }
-    if (url.pathname === '/img/undefined.jpg') {
-      request = '/img/1.jpg'
-    }
   }
   event.respondWith(
     caches.match(request).then( (response) => {
       if (response) console.log('Serving response from cache', event.request.url);
-      return response || fetch(event.request).then( response => {
-        if (response.status == 404) {
-          return fetch(new URL('http://localhost:9000/img/1.jpg'))
-        }
+      return response || fetch(request).then( response => {
         return response;
       }).catch( error => {
         console.log("Fetch Error:", error)

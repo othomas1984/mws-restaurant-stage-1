@@ -130,7 +130,7 @@ gulp.task('serve', () => {
       '.tmp/fonts/**/*'
     ]).on('change', reload);
 
-    gulp.watch('app/css/**/*.scss', ['css']);
+    gulp.watch('app/css/**/*.css', ['css']);
     gulp.watch('app/js/**/*.js', ['js']);
     gulp.watch('app/sw.js', ['sw']);
     gulp.watch('app/fonts/**/*', ['fonts']);

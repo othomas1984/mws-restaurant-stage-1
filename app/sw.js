@@ -1,9 +1,11 @@
 import idb from 'idb';
 
-var dbPromise = idb.open('mws-restaurant-app', 1, (upgrade) => {
+var dbPromise = idb.open('mws-restaurant-app', 2, (upgrade) => {
   switch (upgrade.oldVersion) {
     case 0:
       upgrade.createObjectStore('restaurants');
+    case 1:
+      upgrade.createObjectStore('reviews');
   }
 });
 
@@ -45,9 +47,16 @@ self.addEventListener('fetch', (event) => {
   var url = new URL(event.request.url); 
   // console.log('Fetch caught', url); 
 
-  let request = event.request 
+  let request = event.request
+  let path = url.pathname 
   if (url.port == 1337) {
-    handleRestaurantDataRequest(event, url.pathname)
+    if(path.startsWith('/reviews')) {
+      let key = url.searchParams.get('restaurant_id') || 'reviews'
+      handleReviewDataRequest(event, key);
+    } else if (path.startsWith('/restaurants')) {
+      let key = path.split('/').pop();
+      handleRestaurantDataRequest(event, key);
+    }
     return
   }
 
@@ -75,11 +84,34 @@ var handleRestaurantDataRequest = (event, key) => {
   event.respondWith(
     dbPromise.then(db => {
       return db.transaction('restaurants').objectStore('restaurants').get(key).then( cachedResponse => {
-        if (cachedResponse) console.log('Serving response from cache', event.request.url);
+        if (cachedResponse) console.log('Serving restaurant response from cache', event.request.url);
         return cachedResponse || fetch(event.request).then(fetchResonse => {
           return fetchResonse.json().then( json => {
             const tx = db.transaction('restaurants', 'readwrite');
             tx.objectStore('restaurants').put(json, key);
+            tx.complete;
+            return json
+          })
+        });
+      });
+    }).then( json => {
+      let response = new Response(JSON.stringify(json));
+      return response
+    }).catch(error => {
+      console.log("IndexedDB Error:", error);
+    })
+  );
+}
+
+var handleReviewDataRequest = (event, key) => {
+  event.respondWith(
+    dbPromise.then(db => {
+      return db.transaction('reviews').objectStore('reviews').get(key).then( cachedResponse => {
+        if (cachedResponse) console.log('Serving review response from cache', event.request.url);
+        return cachedResponse || fetch(event.request).then(fetchResonse => {
+          return fetchResonse.json().then( json => {
+            const tx = db.transaction('reviews', 'readwrite');
+            tx.objectStore('reviews').put(json, key);
             tx.complete;
             return json
           })

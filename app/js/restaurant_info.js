@@ -194,7 +194,7 @@ let createReviewHTML = (review) => {
   reviewArticle.appendChild(name);
 
   const date = document.createElement('span');
-  date.innerHTML = review.date;
+  date.innerHTML = new Date(review.createdAt).toDateString();
   date.className = 'reviewDate'
   reviewArticle.appendChild(date);
 

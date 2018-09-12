@@ -77,6 +77,35 @@ let fetchRestaurantFromURL = (callback) => {
 }
 
 /**
+ * Get current restaurant reviews from page URL.
+ */
+let fetchRestaurantReviewsFromURL = (callback) => {
+  if (!self.restaurant) { // restaurant not yet fetched
+    error = 'Restaurant not yet fetched'
+    callback(error, null);
+    return
+  }
+  if (self.restaurant && self.restaurant.reviews) { // reviews already fetched!
+    callback(null, self.restaurant.reviews)
+    return;
+  }
+  const id = getParameterByName('id');
+  if (!id) { // no id found in URL
+    error = 'No restaurant id in URL'
+    callback(error, null);
+  } else {
+    DBHelper.fetchRestaurantReviewsById(id, (error, reviews) => {
+      self.restaurant.reviews = reviews;
+      if (!restaurant.reviews) {
+        console.error(error);
+        return;
+      }
+      callback(null, restaurant.reviews)
+    });
+  }
+}
+
+/**
  * Create restaurant HTML and add it to the webpage
  */
 let fillRestaurantHTML = (restaurant = self.restaurant) => {

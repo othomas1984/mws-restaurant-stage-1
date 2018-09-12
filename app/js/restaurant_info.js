@@ -31,6 +31,7 @@ let initMap = () => {
       }).addTo(newMap);
       fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.newMap);
+        fillRestaurantHTML(); 
     }
   });
 }  
@@ -70,7 +71,6 @@ let fetchRestaurantFromURL = (callback) => {
         console.error(error);
         return;
       }
-      fillRestaurantHTML();
       callback(null, restaurant)
     });
   }

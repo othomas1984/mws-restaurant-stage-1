@@ -44,6 +44,7 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.method != "GET") return;
   var url = new URL(event.request.url); 
   // console.log('Fetch caught', url); 
 

@@ -108,6 +108,32 @@ let fetchRestaurantReviewsFromURL = (callback) => {
 }
 
 /**
+ * Submit new review.
+ */
+let submitReview = () => {
+  const id = getParameterByName('id');
+  if (!id) { // no id found in URL
+    error = 'No restaurant id in URL'
+    callback(error, null);
+  } else {
+    const nameElement = document.getElementById('add-review-form-full-name');
+    const ratingElement = document.getElementById('add-review-form-rating');
+    const reviewElement = document.getElementById('add-review-form-review');
+
+    const ratingIndex = ratingElement.selectedIndex;
+
+    const rating = ratingElement[ratingIndex].value;
+    DBHelper.postReview(id, nameElement.value, rating, reviewElement.value, (error, response) => {
+      if(error) {
+        alert('Error saving review. Please try again');
+      } else {
+
+      }
+    });
+  }
+}
+
+/**
  * Create restaurant HTML and add it to the webpage
  */
 let fillRestaurantHTML = (restaurant = self.restaurant) => {

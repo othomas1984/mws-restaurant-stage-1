@@ -133,6 +133,29 @@ class DBHelper {
   }
 
   /**
+   * Post a review.
+   */
+  static postReview(id, name, rating, review, callback) {
+    const data = {
+      'restaurant_id': id,
+      'name': name,
+      'rating': rating,
+      'comments': review
+    }
+  
+    fetch(`${DBHelper.DATABASE_URL}/reviews/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+        },
+        body: JSON.stringify(data)
+      })
+      .then( response => response.json())
+      .then( json => callback(null, json))
+      .catch( error => callback(error, null));
+  }
+
+  /**
    * Restaurant page URL.
    */
   static urlForRestaurant(restaurant) {

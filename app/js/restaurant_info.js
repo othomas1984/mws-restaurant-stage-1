@@ -127,7 +127,7 @@ let submitReview = () => {
       if(error) {
         alert('Error saving review. Please try again');
       } else {
-
+        location.reload()
       }
     });
   }

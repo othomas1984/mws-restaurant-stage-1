@@ -28,7 +28,7 @@ gulp.task('css', () => {
 });
 
 gulp.task('js', () => {
-  return gulp.src('app/js/**/*.js')
+  return gulp.src(['app/js/**/*.js', , '!app/js/**/dbhelper.js'])
     .pipe($.plumber())
     .pipe($.if(dev, $.sourcemaps.init()))
     .pipe($.babel())
@@ -42,6 +42,13 @@ gulp.task('sw', () => {
   return bundle
     .pipe(source('sw.js'))
     .pipe(gulp.dest('.tmp/'))
+});
+
+gulp.task('dbhelper', () => {
+  let bundle = browserify('app/js/dbhelper.js').transform(babelify).bundle()
+  return bundle
+    .pipe(source('dbhelper.js'))
+    .pipe(gulp.dest('.tmp/js/'))
 });
 
 function lint(files) {
@@ -112,7 +119,7 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('serve', () => {
-  runSequence(['clean', 'wiredep'], ['css', 'js', 'sw', 'fonts', 'copy-images'], () => {
+  runSequence(['clean', 'wiredep'], ['css', 'js', 'sw', 'dbhelper', 'fonts', 'copy-images'], () => {
     browserSync.init({
       notify: false,
       port: 9000,
@@ -131,7 +138,7 @@ gulp.task('serve', () => {
     ]).on('change', reload);
 
     gulp.watch('app/css/**/*.css', ['css']);
-    gulp.watch('app/js/**/*.js', ['js']);
+    gulp.watch('app/js/**/*.js', ['js', 'dbhelper']);
     gulp.watch('app/sw.js', ['sw']);
     gulp.watch('app/fonts/**/*', ['fonts']);
     gulp.watch('bower.json', ['wiredep', 'fonts']);

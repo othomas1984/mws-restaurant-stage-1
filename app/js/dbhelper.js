@@ -1,3 +1,14 @@
+import idb from 'idb';
+
+var dbPromise = idb.open('mws-restaurant-app', 2, (upgrade) => {
+  switch (upgrade.oldVersion) {
+    case 0:
+      upgrade.createObjectStore('restaurants');
+    case 1:
+      upgrade.createObjectStore('reviews');
+  }
+});
+
 /**
  * Common database helper functions.
  */
@@ -135,15 +146,17 @@ class DBHelper {
   /**
    * Post a review.
    */
-  static postReview(id, name, rating, review, callback) {
+  static postReview(restaurant_id, name, rating, review, callback) {
     const data = {
-      'restaurant_id': id,
+      'restaurant_id': restaurant_id,
       'name': name,
       'rating': rating,
-      'comments': review
+      'comments': review,
+      'createdAt': Date.now()
     }
-  
-    fetch(`${DBHelper.DATABASE_URL}/reviews/`, {
+
+    DBHelper.addReviewToCache(data, restaurant_id, () => {
+          fetch(`${DBHelper.DATABASE_URL}/reviews/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
@@ -153,7 +166,28 @@ class DBHelper {
       .then( response => response.json())
       .then( json => callback(null, json))
       .catch( error => callback(error, null));
+    });
   }
+
+  /**
+   * Add review to cache.
+   */
+   static addReviewToCache(data, restaurant_id, callback) {
+    dbPromise.then(db => {
+      const tx = db.transaction('reviews', 'readwrite')
+      tx.objectStore('reviews').get(restaurant_id)
+      .then(reviews => {
+        reviews.push(data);
+        tx.objectStore('reviews').put(reviews, restaurant_id);
+        tx.complete;
+        callback()
+      })
+      .catch(error => {
+        console.log('Error adding review to cache:', error)
+        callback()
+      });  
+    });
+   }
 
   /**
    * Restaurant page URL.
@@ -196,3 +230,4 @@ class DBHelper {
 
 }
 
+window.DBHelper = DBHelper;

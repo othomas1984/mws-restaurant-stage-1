@@ -1,11 +1,16 @@
 import idb from 'idb';
 
-var dbPromise = idb.open('mws-restaurant-app', 2, (upgrade) => {
+var dbPromise = idb.open('mws-restaurant-app', 3, (upgrade) => {
   switch (upgrade.oldVersion) {
     case 0:
       upgrade.createObjectStore('restaurants');
     case 1:
       upgrade.createObjectStore('reviews');
+    case 2:
+      upgrade.createObjectStore("queuedRequests", {
+        keyPath: "id",
+        autoIncrement: true
+      });
   }
 });
 

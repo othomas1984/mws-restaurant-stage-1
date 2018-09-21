@@ -161,19 +161,83 @@ class DBHelper {
     }
 
     DBHelper.addReviewToCache(data, restaurant_id, () => {
-          fetch(`${DBHelper.DATABASE_URL}/reviews/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-        },
-        body: JSON.stringify(data)
-      })
-      .then( response => response.json())
-      .then( json => callback(null, json))
-      .catch( error => callback(error, null));
+      DBHelper.queueNetworkRequest(`${DBHelper.DATABASE_URL}/reviews/`, data, 'POST')
+      callback()
     });
   }
 
+  /**
+   * Queue network request.
+   */
+  static queueNetworkRequest(url, body, method) {
+    const data = { url: url, body: body, method: method }
+    dbPromise.then(db => {
+      const tx = db.transaction('queuedRequests', 'readwrite')
+      tx.objectStore('queuedRequests').put(data);
+      tx.complete;
+      DBHelper.sendQueuedNetworkRequests()
+    });
+  }
+
+  /**
+   * Try sending network requests.
+   */
+  static sendQueuedNetworkRequests() {
+    DBHelper.sendQueuedNetworkRequests2(DBHelper.sendQueuedNetworkRequests);
+  }
+  
+  /**
+   * Try sending network requests.
+   */
+  static sendQueuedNetworkRequests2(callback) {
+    dbPromise.then(db => {
+      const tx = db.transaction('queuedRequests', 'readwrite')
+      tx.objectStore('queuedRequests').openCursor()
+      .then(cursor => {
+        if(!cursor) {
+          return;
+        }
+        const data = cursor.value
+        DBHelper.sendNetworkRequest(data, (error, json) => {
+          if(error) {
+            return
+          };
+          const tx = db.transaction('queuedRequests', 'readwrite')
+          tx.objectStore('queuedRequests').delete(data.id)
+          .then(() => {
+            callback();
+          });
+        });
+      });
+    });
+  }
+  
+  /**
+   * Send network request.
+   */
+  static sendNetworkRequest(data, callback) {
+    const url = data.url;
+    const method = data.method;
+    let body = data.body;
+    if (body) {
+      body = JSON.stringify(body)
+    }
+    const content = {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: body
+    }
+
+    fetch(url, content)
+    .then( response => {
+      return response.json()
+    })
+    .then( json => callback(null, json))
+    .catch( error => callback(error, null));
+  }
+  
   /**
    * Add review to cache.
    */
@@ -188,7 +252,6 @@ class DBHelper {
         callback()
       })
       .catch(error => {
-        console.log('Error adding review to cache:', error)
         callback()
       });  
     });

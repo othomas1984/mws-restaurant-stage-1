@@ -144,6 +144,31 @@ let submitReview = () => {
 }
 
 /**
+ * Submit new review.
+ */
+let toggleFavorite = () => {
+  const id = getParameterByName('id');
+  if (!id) { // no id found in URL
+    error = 'No restaurant id in URL'
+    callback(error, null);
+  } else {
+    const favoriteElement = document.getElementById('restaurant-favorite');
+    let currentlySelected = (favoriteElement.className == 'favorite-selected')
+    let newSelectedState = !currentlySelected
+
+    DBHelper.setFavorite(id, newSelectedState, (error, response) => {
+      if(error) {
+        alert('Error saving favorite. Please try again');
+      } else {
+        self.restaurant.is_favorite = newSelectedState
+        favoriteElement.className = newSelectedState ? 'favorite-selected' : 'favorite-unselected';
+        favoriteElement.title = newSelectedState ? 'Is a favorite' : 'Is not a favorite';
+      }
+    });
+  }
+}
+
+/**
  * Create restaurant HTML and add it to the webpage
  */
 let fillRestaurantHTML = (restaurant = self.restaurant) => {
@@ -160,6 +185,10 @@ let fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
+
+  const favorite = document.getElementById('restaurant-favorite');
+  favorite.title = restaurant.is_favorite ? 'Is a favorite' : 'Is not a favorite';
+  favorite.className = restaurant.is_favorite ? 'favorite-selected' : 'favorite-unselected';
 
   // fill operating hours
   if (restaurant.operating_hours) {

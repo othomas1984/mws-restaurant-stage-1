@@ -167,6 +167,16 @@ class DBHelper {
   }
 
   /**
+   * Set Favorite Restaurant.
+   */
+  static setFavorite(restaurant_id, isfavorite, callback) {
+    DBHelper.updateFavoriteInCache(restaurant_id, isfavorite, () => {
+      DBHelper.queueNetworkRequest(`${DBHelper.DATABASE_URL}/restaurants/${restaurant_id}/?is_favorite=${isfavorite ? 'true' : 'false'}`, '', 'PUT')
+      callback()
+    });
+  }
+
+  /**
    * Queue network request.
    */
   static queueNetworkRequest(url, body, method) {
@@ -248,6 +258,25 @@ class DBHelper {
       .then(reviews => {
         reviews.push(data);
         tx.objectStore('reviews').put(reviews, restaurant_id);
+        tx.complete;
+        callback()
+      })
+      .catch(error => {
+        callback()
+      });  
+    });
+   }
+
+  /**
+   * Update restaurant favorite in cache.
+   */
+   static updateFavoriteInCache(restaurant_id, isfavorite, callback) {
+    dbPromise.then(db => {
+      const tx = db.transaction('restaurants', 'readwrite')
+      tx.objectStore('restaurants').get(restaurant_id)
+      .then(restaurant => {
+        restaurant.is_favorite = isfavorite
+        tx.objectStore('restaurants').put(restaurant, restaurant_id);
         tx.complete;
         callback()
       })

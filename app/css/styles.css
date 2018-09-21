@@ -274,6 +274,19 @@ header h1 a {
   font-family: Arial,sans-serif;
   font-size: 12pt;
 }
+#restaurant-favorite {
+  height:20px;
+  width:22px;
+  float:right;
+  margin: 5px 10px;
+  border: 0px;
+}
+.favorite-selected {
+  background: url(/img/favorite_selected.png);
+}
+.favorite-unselected {
+  background: url(/img/favorite_unselected.png);
+}
 #restaurant-hours {
   margin: 20px;
 }

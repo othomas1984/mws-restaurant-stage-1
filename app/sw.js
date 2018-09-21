@@ -62,8 +62,12 @@ self.addEventListener('fetch', (event) => {
         // Do nothing, just a response from a POST
       }
     } else if (path.startsWith('/restaurants')) {
-      let key = path.split('/').pop();
-      handleRestaurantDataRequest(event, key);
+      if(event.request.method === 'GET') {
+        let key = path.split('/').pop();
+        handleRestaurantDataRequest(event, key);
+      } else {
+        // do nothing
+      }
     }
     return
   }

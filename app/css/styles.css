@@ -274,6 +274,23 @@ header h1 a {
   font-family: Arial,sans-serif;
   font-size: 12pt;
 }
+#add-review {
+  padding: 10px 10px; 
+}
+#add-review label {
+  color: #f18200;
+  font-family: Arial,sans-serif;
+  font-size: 12pt;
+}
+#add-review h3 {
+  color: #f18200;
+  font-family: Arial,sans-serif;
+  font-size: 14pt;
+}
+#add-review-form-review {
+  width: 99%; 
+  height: 100px;
+}
 #restaurant-favorite {
   height:20px;
   width:22px;

@@ -44,16 +44,18 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.method != "GET") return;
   var url = new URL(event.request.url); 
-  // console.log('Fetch caught', url); 
 
   let request = event.request
   let path = url.pathname 
   if (url.port == 1337) {
     if(path.startsWith('/reviews')) {
-      let key = url.searchParams.get('restaurant_id') || 'reviews'
-      handleReviewDataRequest(event, key);
+      if(event.request.method === 'GET') {
+        let key = url.searchParams.get('restaurant_id') || 'reviews'
+        handleReviewDataRequest(event, key);
+      } else if(event.request.method === 'POST') {
+        // Do nothing, just a response from a POST
+      }
     } else if (path.startsWith('/restaurants')) {
       let key = path.split('/').pop();
       handleRestaurantDataRequest(event, key);

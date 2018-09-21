@@ -117,17 +117,26 @@ let submitReview = () => {
     callback(error, null);
   } else {
     const nameElement = document.getElementById('add-review-form-full-name');
+    const name = nameElement.value
     const ratingElement = document.getElementById('add-review-form-rating');
-    const reviewElement = document.getElementById('add-review-form-review');
-
     const ratingIndex = ratingElement.selectedIndex;
-
     const rating = ratingElement[ratingIndex].value;
-    DBHelper.postReview(id, nameElement.value, rating, reviewElement.value, (error, response) => {
+    const reviewElement = document.getElementById('add-review-form-review');
+    const review = reviewElement.value
+
+    nameElement.value = null;
+    reviewElement.value = null;
+    ratingElement.selectedIndex = 0;
+
+
+    DBHelper.postReview(id, name, rating, review, (error, response) => {
       if(error) {
         alert('Error saving review. Please try again');
       } else {
-        location.reload()
+        self.restaurant.reviews = null
+        fetchRestaurantReviewsFromURL( (error, reviews) => {
+          fillReviewsHTML(); 
+        });
       }
     });
   }
@@ -186,6 +195,7 @@ let fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours)
  */
 let fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
+  container.innerHTML = '<div id="reviews-list"></div>';
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);

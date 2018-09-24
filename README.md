@@ -1,7 +1,7 @@
 # Mobile Web Specialist Certification Course
 ## Installation and Usage
 
-Make sure you have a server running on `localhost:1337` which will serve up the proper restaurant data. See [repo for part II](https://github.com/udacity/mws-restaurant-stage-2) of the course.
+Make sure you have a server running on `localhost:1337` which will serve up the proper restaurant data. See [repo for part III](https://github.com/udacity/mws-restaurant-stage-3) of the course.
 
 Make sure all dependancies are installed properly:
 

@@ -14,7 +14,7 @@ var dbPromise = idb.open('mws-restaurant-app', 3, (upgrade) => {
   }
 });
 
-var currentCacheName = 'restaurants-cache-0001';
+var currentCacheName = 'restaurants-cache-0003';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

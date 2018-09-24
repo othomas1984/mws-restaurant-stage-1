@@ -128,7 +128,7 @@ let submitReview = () => {
     nameElement.value = null;
     reviewElement.value = null;
     ratingElement.selectedIndex = 0;
-
+    toggleReviewFormVisibility(false);
 
     DBHelper.postReview(id, name, rating, review, (error, response) => {
       if(error) {
@@ -166,6 +166,16 @@ let toggleFavorite = () => {
       }
     });
   }
+}
+
+/**
+ * Toggle Review Form Visibility
+ */
+let toggleReviewFormVisibility = (open = null) => {
+  const favoriteElement = document.getElementById('add-review-form');
+  let currentlyOpen = (favoriteElement.className == 'open')
+  let newOpenState = open || !currentlyOpen
+  favoriteElement.className = newOpenState ? 'open' : 'closed';
 }
 
 /**

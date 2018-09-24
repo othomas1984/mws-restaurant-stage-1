@@ -179,9 +179,7 @@ header h1 a {
 }
 #restaurants-list article button {
   background-color: orange;
-  /*border-bottom: 3px solid #eee;*/
   color: #fff;
-  /*display: inline-block;*/
   font-size: 10pt;
   margin: 15px 5px 20px;
   padding: 8px 30px 10px;
@@ -274,18 +272,41 @@ header h1 a {
   font-family: Arial,sans-serif;
   font-size: 12pt;
 }
-#add-review {
+#add-review-container {
   padding: 10px 10px; 
 }
-#add-review label {
+#add-review-container label {
   color: #f18200;
   font-family: Arial,sans-serif;
   font-size: 12pt;
 }
-#add-review h3 {
+#add-review-container h3 {
   color: #f18200;
   font-family: Arial,sans-serif;
   font-size: 14pt;
+}
+#add-review-toggle-visability-button {
+  background-color: orange;
+  color: #fff;
+  font-size: 10pt;
+  margin: 15px 5px 20px;
+  padding: 8px 30px 10px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: none;
+  box-shadow: 0px 0px 5px 0px #999;
+}
+#add-review-container .closed {
+  height: 0px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.5s linear, opacity 0.5s linear;
+}
+#add-review-container .open {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0.5s linear, opacity 0.5s linear;
 }
 #add-review-form-review {
   width: 99%; 

@@ -35,24 +35,26 @@
           <h2 id="restaurant-cuisine"></h2>
         </div>
       </section>
-      <section id="add-review" style="width:100%;">
-        <h3 id="restaurant-leave-review">Leave a Review</h3>
-        <label id="review-full-name">Full Name</label>
-        <input id="add-review-form-full-name" type="text" aria-labelledby="review-full-name">
-        <br>
-        <label id="ratings-select-label">Rating</label>
-        <select id="add-review-form-rating" aria-labelledby="ratings-select-label">
-          <option value="5">5 of 5 stars</option>
-          <option value="4">4 of 5 stars</option>
-          <option value="3">3 of 5 stars</option>
-          <option value="2">2 of 5 stars</option>
-          <option value="1">1 of 5 stars</option>
-        </select>
-        <br>
-        <label id="review-text">Review</label>
-        <br>
-        <textarea id="add-review-form-review" name="review"></textarea>
-        <button onclick="submitReview()">Submit</button>
+      <section id="add-review-container" style="width:100%;">
+        <button id="add-review-toggle-visability-button" onclick="toggleReviewFormVisibility()">Leave a Review</button>
+        <div id="add-review-form" class="closed">
+          <label id="review-full-name">Full Name</label>
+          <input id="add-review-form-full-name" type="text" aria-labelledby="review-full-name">
+          <br>
+          <label id="ratings-select-label">Rating</label>
+          <select id="add-review-form-rating" aria-labelledby="ratings-select-label">
+            <option value="5">5 of 5 stars</option>
+            <option value="4">4 of 5 stars</option>
+            <option value="3">3 of 5 stars</option>
+            <option value="2">2 of 5 stars</option>
+            <option value="1">1 of 5 stars</option>
+          </select>
+          <br>
+          <label id="review-text">Review</label>
+          <br>
+          <textarea id="add-review-form-review" name="review"></textarea>
+          <button onclick="submitReview()">Submit</button>
+        </div>
       </section> 
       <section id="reviews-container">
         <div id="reviews-list"></div>
